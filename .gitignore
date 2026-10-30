@@ -1,0 +1,6 @@
+export/
+output-*/
+*.ova
+*.ovf
+*.vmdk
+packer_cache/
