@@ -30,7 +30,7 @@
       "format": "ova",
       "boot_mode": "legacy-bios",
       "license_type": "BYOL",
-      "ami_name": "vm1-nginx-json",
+      "ami_name": "vm1-nginx-json-{{timestamp}}",
       "tags": {
         "Name": "vm1-nginx-json"
       }

@@ -56,7 +56,7 @@ build {
     format         = "ova"
     boot_mode      = "legacy-bios"
     license_type   = "BYOL"
-    ami_name       = "vm1-nginx-hcl"
+    ami_name       = "vm1-nginx-hcl-${formatdate("YYYYMMDDhhmmss", timestamp())}"
     tags = {
       Name = "vm1-nginx-hcl"
     }
