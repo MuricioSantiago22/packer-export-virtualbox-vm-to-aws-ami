@@ -4,3 +4,5 @@ output-*/
 *.ovf
 *.vmdk
 packer_cache/
+build.log
+hcl/config.pkr.hcl
