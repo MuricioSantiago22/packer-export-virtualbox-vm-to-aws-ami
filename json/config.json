@@ -1,17 +1,15 @@
 {
   "builders": [
     {
-      "type": "virtualbox-ovf",
-      "source_path": "../export/vm1.ova",
+      "type": "virtualbox-vm",
+      "vm_name": "vm1-efi",
       "format": "ova",
-      "vm_name": "vm1-packer",
       "headless": true,
+      "guest_additions_mode": "disable",
+      "vboxmanage": [["modifyvm", "{{.Name}}", "--nic1", "nat"]],
       "ssh_username": "mau",
       "ssh_password": "Mau_220992",
       "ssh_timeout": "20m",
-      "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--nic1", "nat"]
-      ],
       "shutdown_command": "echo 'Mau_220992' | sudo -S shutdown -P now"
     }
   ],
@@ -28,7 +26,8 @@
       "region": "us-east-2",
       "s3_bucket_name": "packer-vm-import-mauricio-2026",
       "format": "ova",
-      "boot_mode": "legacy-bios",
+      "boot_mode": "uefi",
+      "platform": "linux",
       "license_type": "BYOL",
       "ami_name": "vm1-nginx-json-{{timestamp}}",
       "tags": {

@@ -30,20 +30,20 @@ variable "s3_bucket_name" {
   default = "packer-vm-import-mauricio-2026"
 }
 
-source "virtualbox-ovf" "vm1" {
-  source_path      = "../export/vm1.ova"
-  format           = "ova"
-  vm_name          = "vm1-packer"
-  headless         = true
-  ssh_username     = var.ssh_username
-  ssh_password     = var.ssh_password
-  ssh_timeout      = "20m"
-  vboxmanage       = [["modifyvm", "{{.Name}}", "--nic1", "nat"]]
-  shutdown_command = "echo '${var.ssh_password}' | sudo -S shutdown -P now"
+source "virtualbox-vm" "vm1" {
+  vm_name              = "vm1-efi"
+  format               = "ova"
+  headless             = true
+  guest_additions_mode = "disable"
+  vboxmanage           = [["modifyvm", "{{.Name}}", "--nic1", "nat"]]
+  ssh_username         = var.ssh_username
+  ssh_password         = var.ssh_password
+  ssh_timeout          = "20m"
+  shutdown_command     = "echo '${var.ssh_password}' | sudo -S shutdown -P now"
 }
 
 build {
-  sources = ["source.virtualbox-ovf.vm1"]
+  sources = ["source.virtualbox-vm.vm1"]
 
   provisioner "shell" {
     script          = "../scripts/install-nginx.sh"
@@ -54,7 +54,8 @@ build {
     region         = var.region
     s3_bucket_name = var.s3_bucket_name
     format         = "ova"
-    boot_mode      = "legacy-bios"
+    boot_mode      = "uefi"
+    platform       = "linux"
     license_type   = "BYOL"
     ami_name       = "vm1-nginx-hcl-${formatdate("YYYYMMDDhhmmss", timestamp())}"
     tags = {
